@@ -13,7 +13,7 @@ const HigestRated = ()=>{
     const fetchData = async () => {
         setLoding(true)
        try {
-         const response =  await axios.get(`https://moviesearchapp-server.onrender.com/movie/search?sortby=rating&order=asc&limit=10`,{
+         const response =  await axios.get(`https://moviesearchapp-server.onrender.com/movie/search?sortby=rating&order=desc&limit=10`,{
              headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
          })
          sethdata(response.data.data)
