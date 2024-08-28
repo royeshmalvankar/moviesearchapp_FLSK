@@ -1,11 +1,11 @@
-import React,{useContext,useState} from "react"
+import React,{useContext} from "react"
 import {Link,useNavigate} from "react-router-dom"
 import {AuthContext} from "../authcontext/AuthContext"
 import "../App.css"
 import axios from "axios"
 const Navbar =()=>{
     const css={textDecoration:"none",color:"white"}
-    const {IsAuth,setIsAuth,role}=useContext(AuthContext)
+    const {setIsAuth,role}=useContext(AuthContext)
     
     const Navigate=useNavigate()
 
@@ -15,7 +15,6 @@ const Navbar =()=>{
                  "Authorization": `Bearer ${localStorage.getItem("token")}`
             }})
         localStorage.removeItem("token")
-        setIsAuth(false)
         Navigate("/login")
     }
 
@@ -27,11 +26,11 @@ const Navbar =()=>{
                     <Link to="/genre" style={css}><h1>Genre</h1></Link>
                     <Link to="/higestrated" style={css}><h1>Higest Rated</h1></Link>
                     <Link to="/favorites" style={css}><h1>Favorites</h1></Link>
-                   {role==="ADMIN" && <Link to="/addmovies" style={css}><h1>Add Movies</h1></Link>}
+                   {localStorage.getItem("role")==="ADMIN" && <Link to="/addmovies" style={css}><h1>Add Movies</h1></Link>}
                 </div>
                 <div className="nav2">
-                {IsAuth?<h1 onClick={()=>{logout()}} style={css}>Logout</h1>:<Link to="/login" style={css}><h1>Login</h1></Link>}
-                 {IsAuth?<h1></h1>:<Link to="/register" style={css}><h1>Register</h1></Link>}
+                {localStorage.getItem("token")?<h1 onClick={()=>{logout()}} style={css}>Logout</h1>:<Link to="/login" style={css}><h1>Login</h1></Link>}
+                 {localStorage.getItem("token")?<h1></h1>:<Link to="/register" style={css}><h1>Register</h1></Link>}
                 </div>
             </nav>
         </header>

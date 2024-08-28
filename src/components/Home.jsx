@@ -11,7 +11,7 @@ import Nodata from "./Nodata"
 
 
 const Home = () => {
-    const {data, setData,setLoding, isLoding,setError, isError,setfav} = useContext(AuthContext)
+    const {data, setData,setLoding, isLoding,setError, isError,setfav,Token,IsAuth} = useContext(AuthContext)
     const [sd, setSd] = useState("")
     const [page, setPage] = useState(1)
     const [lastpage, setLastpage] = useState(0)
@@ -132,7 +132,7 @@ const Home = () => {
                 <button onClick={() => setPage(page + 1)} disabled={data.length < 10}>Next</button>
             </div>
             <div className="movie-container">
-                {data.length==0?<h1>No Data Found</h1>:data.map((movie) => {
+                {data.length==null?<h1>No Data Found</h1>:data.map((movie) => {
                     return(
                     <Link style={{ textDecoration: "none" }} to={`/movieselect/${movie._id}`}><div key={movie._id} className="movie">
                         <img src={movie.poster} alt="" />

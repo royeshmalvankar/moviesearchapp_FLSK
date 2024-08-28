@@ -1,5 +1,5 @@
 //libraries
-import React,{useContext,useEffect,useState} from "react";
+import React,{useContext} from "react";
 import {  useNavigate } from "react-router-dom";
 import { AuthContext } from "../authcontext/AuthContext";
 import axios from "axios";
@@ -7,7 +7,7 @@ import "../App.css";
 
 const Login = () => {
     const navigate = useNavigate();
-    const {logemail, setlogemail,logpassword,setlogpassword,setIsAuth,setRole}=useContext(AuthContext);
+    const {logemail, setlogemail,logpassword,setlogpassword}=useContext(AuthContext);
 
     const reset = () => {
         setlogemail("");
@@ -20,7 +20,7 @@ const Login = () => {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         })
-        setRole(ath.data.user.role) 
+        localStorage.setItem("role",ath.data.user.role) 
     }
 
     const fetchlogin = async()=>{
@@ -28,8 +28,8 @@ const Login = () => {
             let response = await axios.post(`https://moviesearchapp-server.onrender.com/user/login`,{email:logemail,password:logpassword})
             let token=response.data.token
             if (token){
-            setIsAuth(true)
-            localStorage.setItem("token",response.data.token)
+
+            localStorage.setItem("token",token)
             alert("login success");
             reset()
             navigate("/")
@@ -37,7 +37,7 @@ const Login = () => {
             }
             else{
                 alert("login failed \n Check Email and Password or if you are new Register first");
-            }
+            }      
             
         } catch (error) {
             console.log(error);

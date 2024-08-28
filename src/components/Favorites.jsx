@@ -4,8 +4,10 @@ import "../App.css"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import { Button } from "@chakra-ui/react"
+import Loding from "../loding&error/Loding"
+import Error from "../loding&error/Error"
 const Favorites = ()=>{
-    const {fav}=useContext(AuthContext)
+    const {fav,setLoding, isLoding,setError, isError}=useContext(AuthContext)
     const [favdata, setFavdata] = useState([])
 
     useEffect(() => {
@@ -13,16 +15,21 @@ const Favorites = ()=>{
     }, [])
     // console.log(fav);
     const getfav=async()=>{
+        setLoding(true)
         try {
+           
             const resp = await axios.get("https://moviesearchapp-server.onrender.com/favorite/favall",{
                 headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
             })   
         setFavdata(resp.data.data)
-        
+        setLoding(false)
         } catch (error) {
+            setError(true)
             console.log(error);
             
         }
+        setError(false)
+        setLoding(false)
         
         
     }
@@ -38,7 +45,18 @@ const Favorites = ()=>{
             
         }
     }
-    
+    if (isLoding) {
+        return(
+            <Loding/>
+        )
+        
+    }
+    if (isError) {
+        return(
+            <Error/>
+        )
+        
+    }
     return(
         <div className="movie-container">
         {favdata.length==0?<h1 style={{width:"100%",textAlign:"center",marginLeft:"230%",marginTop:"50px"}}>No Favorites</h1>:favdata.map((favm) => {
