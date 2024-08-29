@@ -1,5 +1,5 @@
 //libraries
-import React,{useContext} from "react";
+import React,{useContext, useEffect} from "react";
 import {  useNavigate } from "react-router-dom";
 import { AuthContext } from "../authcontext/AuthContext";
 import axios from "axios";
@@ -28,7 +28,6 @@ const Login = () => {
             let response = await axios.post(`https://moviesearchapp-server.onrender.com/user/login`,{email:logemail,password:logpassword})
             let token=response.data.token
             if (token){
-
             localStorage.setItem("token",token)
             alert("login success");
             reset()

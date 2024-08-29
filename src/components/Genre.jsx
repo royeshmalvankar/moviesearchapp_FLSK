@@ -69,7 +69,7 @@ const Genre=()=>{
        
                 {data1.map((movie) => {
                     return(
-                        <Link style={{ textDecoration: "none" }} to={`/movieselect/${movie._id}`}><div key={movie._id} className="movie">
+                        <Link style={{ textDecoration: "none" }} to={`/movieselect/${movie._id}`} key={movie._id}><div  className="movie">
                         <img src={movie.poster} alt="" />
                         <h2>{movie.title}</h2>
                         <p>{movie.year}</p>

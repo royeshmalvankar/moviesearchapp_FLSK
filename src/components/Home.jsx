@@ -51,6 +51,7 @@ const Home = () => {
          const response2 =  await axios.get(`https://moviesearchapp-server.onrender.com/movie/all`,
          {headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}}
          )
+         
          if(response.data.length===0){
             setResponses(true)
          }
@@ -109,7 +110,7 @@ const Home = () => {
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
-                <Button onClick={() => fetchData()} colorScheme="blue" margin="10px">Filter</Button>
+                <button onClick={() => fetchData()} >Filter</button>
             </div>
             <div className="filterandsorting">
                 <label htmlFor="">SortBy:</label>
@@ -124,7 +125,7 @@ const Home = () => {
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                 </select>
-                <Button onClick={() => fetchData()} colorScheme="blue" margin="10px">Sort</Button>
+                <button onClick={() => fetchData()}>Sort</button>
             </div>
             <div className="page">
                 <button onClick={() => setPage(page - 1)} disabled={page === 1}>Previous</button>
@@ -134,7 +135,7 @@ const Home = () => {
             <div className="movie-container">
                 {data.length==null?<h1>No Data Found</h1>:data.map((movie) => {
                     return(
-                    <Link style={{ textDecoration: "none" }} to={`/movieselect/${movie._id}`}><div key={movie._id} className="movie">
+                    <Link style={{ textDecoration: "none" }} to={`/movieselect/${movie._id}`} key={movie._id}><div className="movie">
                         <img src={movie.poster} alt="" />
                         <h2>{movie.title}</h2>
                         <p>{movie.year}</p>

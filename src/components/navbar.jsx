@@ -1,13 +1,17 @@
-import React,{useContext} from "react"
-import {Link,useNavigate} from "react-router-dom"
-import {AuthContext} from "../authcontext/AuthContext"
+import React, { useEffect } from "react"
+import {json, Link,useNavigate} from "react-router-dom"
 import "../App.css"
 import axios from "axios"
 const Navbar =()=>{
     const css={textDecoration:"none",color:"white"}
-    const {setIsAuth,role}=useContext(AuthContext)
     
     const Navigate=useNavigate()
+
+    useEffect(()=>{
+        if(expires  <= Date.now()) {
+            logout()
+          }
+    },[])
 
     const logout=()=>{
         axios.get ("https://moviesearchapp-server.onrender.com/user/logout",{
@@ -15,8 +19,16 @@ const Navbar =()=>{
                  "Authorization": `Bearer ${localStorage.getItem("token")}`
             }})
         localStorage.removeItem("token")
+        localStorage.removeItem("role")
         Navigate("/login")
     }
+    let token =localStorage.getItem("token")
+    const jwtPayload = token && JSON.parse(window.atob(token?.split('.')[1]));
+    const expires = new Date(jwtPayload?.exp * 1000);
+    const date = new Date();
+    console.log("exp",expires,"--","now",date);
+    
+
 
     return(
         <header>

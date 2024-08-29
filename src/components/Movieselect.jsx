@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom"
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
-import { AuthContext } from "../authcontext/AuthContext"
 import Loding from "../loding&error/Loding"
 import Error from "../loding&error/Error"
 import "../App.css"
@@ -11,7 +10,6 @@ const Movieselect = () => {
     const { id } = useParams()
     const [isLoding, setLoding] = useState(true)
     const [isError, setError] = useState(false)
-    const {role} = useContext(AuthContext)
 
     useEffect(() => {
         fetchData()
@@ -19,17 +17,18 @@ const Movieselect = () => {
 
     const fetchData = async () => {
         setLoding(true)
+        setError(false)  // Reset error before fetching
         try {
-            const response = await axios.get(`https://moviesearchapp-server.onrender.com/movie/${id}`,{
-                headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
+            const response = await axios.get(`https://moviesearchapp-server.onrender.com/movie/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             setData(response.data.data)
-            setLoding(false)
         } catch (error) {
             setError(true)
+            console.error("Failed to fetch data:", error.response || error.message)
+        } finally {
+            setLoding(false)
         }
-        setError(false)
-        setLoding(false)
     }
     const addfav = async (data) => {
         console.log(data);
@@ -67,7 +66,6 @@ const Movieselect = () => {
     }
 
     return (
-
         <div className="movieselect">
             <img src={data.poster} alt="" />
             <h1>{data.title}</h1>
@@ -77,7 +75,7 @@ const Movieselect = () => {
             <p><span>Rating: </span>{data.rating}</p>
             <p><span>Genre: </span>{data.genre.join(" ,")}</p>
             <button onClick={() => addfav(data)}>Add to Favorites</button>
-           {role==="ADMIN" && <Link style={{textDecoration:"none",color:"white"}} to={`/update/${data._id}`}><button>Update Details</button></Link>}
+           {localStorage.getItem("role")=="ADMIN" && <Link style={{textDecoration:"none",color:"white"}} to={`/update/${data._id}`}><button>Update Details</button></Link>}
         </div>
     )
 }

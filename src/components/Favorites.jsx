@@ -61,8 +61,7 @@ const Favorites = ()=>{
         <div className="movie-container">
         {favdata.length==0?<h1 style={{width:"100%",textAlign:"center",marginLeft:"230%",marginTop:"50px"}}>No Favorites</h1>:favdata.map((favm) => {
                     return(
-                        <>
-                        <div key={favm._id} className="movie" style={{height:"570px"}} ><Link style={{ textDecoration: "none" }} to={`/movieselect/${favm.mov_id}`}>
+                        <div key={favm._id}  className="movie" style={{height:"570px"}} ><Link style={{ textDecoration: "none" }} to={`/movieselect/${favm.mov_id}`} key={favm._id} >
                         <img src={favm.poster} alt="" />
                         <h2>{favm.title}</h2>
                         <p>{favm.year}</p>
@@ -70,7 +69,6 @@ const Favorites = ()=>{
                         <button style={{marginTop:"10px"}} onClick={() => removefav(favm)}>Remove</button>
                     </div>
                     
-                    </>
                     )
                     })}
         </div>
