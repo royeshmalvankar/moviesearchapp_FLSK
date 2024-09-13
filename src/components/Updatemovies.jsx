@@ -28,9 +28,10 @@ const UpdateMovie = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/movie/${id}`,{
+      const response = await axios.get(`https://moviesearchapp-server.onrender.com/movie/${id}`,{
         headers: {Authorization: `Bearer ${localStorage.getItem("token")}`},
       })
+      
       setformstate({
         ...formstate,
         title:response.data.data.title,
@@ -48,6 +49,7 @@ const UpdateMovie = () => {
       console.log(error);
     }
   }
+  
   function handelchange(e) {
     setformstate({...formstate,[e.target.name]:e.target.value})
   }

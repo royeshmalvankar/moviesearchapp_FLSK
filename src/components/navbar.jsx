@@ -1,9 +1,11 @@
-import React, { useEffect } from "react"
-import {json, Link,useNavigate} from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { Link,useNavigate} from "react-router-dom"
 import "../App.css"
 import axios from "axios"
 const Navbar =()=>{
     const css={textDecoration:"none",color:"white"}
+
+    const [user,setUser]=useState("")
     
     const Navigate=useNavigate()
 
@@ -11,8 +13,20 @@ const Navbar =()=>{
         if(expires  <= Date.now()) {
             logout()
           }
+          userdata()
     },[])
 
+    const userdata=async()=>{
+        try {
+            const response = await axios.get(`https://moviesearchapp-server.onrender.com/user/profile`,{
+                headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}   
+            })
+            setUser(response.data.user.name)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
     const logout=()=>{
         axios.get ("https://moviesearchapp-server.onrender.com/user/logout",{
             headers:{
@@ -41,7 +55,7 @@ const Navbar =()=>{
                    {localStorage.getItem("role")==="ADMIN" && <Link to="/addmovies" style={css}><h1>Add Movies</h1></Link>}
                 </div>
                 <div className="nav2">
-                {localStorage.getItem("token")?<h1 onClick={()=>{logout()}} style={css}>Logout</h1>:<Link to="/login" style={css}><h1>Login</h1></Link>}
+                {localStorage.getItem("token")?<div className="user"><><h1>Welcome! {user}</h1></><h1 onClick={()=>{logout()}} style={css}>Logout</h1></div>:<Link to="/login" style={css}><h1>Login</h1></Link>}
                  {localStorage.getItem("token")?<h1></h1>:<Link to="/register" style={css}><h1>Register</h1></Link>}
                 </div>
             </nav>
